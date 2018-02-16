@@ -19,9 +19,7 @@ class ShelfChanger extends React.Component {
             })
         });
 
-        this.props.onBookMove(book, self, () => {
-            this.removeLoading(this)
-        });
+        this.props.onBookMove(book, self);
     }
 
     removeLoading(element) {

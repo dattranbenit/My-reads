@@ -39,23 +39,10 @@ class BooksApp extends React.Component {
 			})
 	}
 
-	onBookMove = (book, targetShelf, callBack) => {
-
-		let newCallback;
-
-		if (callBack) {
-			newCallback = () => {
-				this.refreshBookList()
-				callBack()
-			}
-		} else {
-			newCallback = () => {
-				this.refreshBookList()
-			}
-		}
+	onBookMove = (book, targetShelf) => {
 
 		update(book, targetShelf)
-			.then(() => newCallback())
+			.then(() => this.refreshBookList())
 
 	}
 
