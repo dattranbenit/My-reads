@@ -1,5 +1,19 @@
 # udacity-my-reads
-Udacity "MyReads - A book tracking app" project - React Developer Nanodegree
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+
+This project helps you to manage your book habits.
+
+Main features:
+
+ - Catalog books into different phases of your reading process:
+   - Currently reading
+   - Want to read
+   - Read
+ - Add more books to these main categories, adding a search feature
+
+ Instructions:
+  - npm install
+  - npm start
+
+
