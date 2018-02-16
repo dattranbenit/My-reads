@@ -10,7 +10,7 @@ class ShelfChanger extends React.Component {
         })
     }
 
-    moveBook = (book, self) => {
+    moveBook = (book, shelf) => {
         this.setState({
             shelfClassName: classNames({
                 'book-shelf-changer': true,
@@ -19,7 +19,7 @@ class ShelfChanger extends React.Component {
             })
         });
 
-        this.props.onBookMove(book, self);
+        this.props.onBookMove(book, shelf);
     }
 
     removeLoading(element) {
