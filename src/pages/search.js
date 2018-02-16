@@ -38,7 +38,7 @@ class Search extends React.Component {
 
     doSearch() {
         if (this.state.query) {
-            search(this.state.query, 5)
+            search(this.state.query.trim(), 5)
                 .then((response) => {
                     if (response.error) {
                         throw Error(response.error);
