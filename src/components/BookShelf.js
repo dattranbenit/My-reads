@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ShelfChanger from '../components/ShelfChanger';
+import BookCover from '../components/BookCover';
 
 
 
@@ -19,12 +20,11 @@ class BookShelf extends React.Component {
                 <ol className="books-grid">
                     {
                         this.props.books.map(book => (
+
                             <li key={book.id}>
                                 <div className="book">
                                     <div className="book-top">
-                                        <div
-                                            className="book-cover"
-                                            style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.smallThumbnail}")` }} />
+                                        <BookCover book={book} />
                                         <ShelfChanger
                                             shelf={book.shelf}
                                             shelfs={this.props.shelfs}

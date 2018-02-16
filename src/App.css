@@ -179,6 +179,11 @@ body, .app {
 	background: #eee;
 }
 
+.book-cover.no-cover {
+    background-image: url('./icons/no-image-slide.png');
+	background-repeat: no-repeat;
+}
+
 .book-cover-title {
 	padding: 20px 10px 0;
 	text-align: center;
