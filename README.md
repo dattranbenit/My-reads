@@ -13,7 +13,17 @@ Main features:
  - Add more books to these main categories, adding a search feature
 
  Instructions:
-  - npm install
-  - npm start
+  - Install all project dependencies:
+  ```
+  npm install
+  ```
+  - Run projecty in development environment
+  ```
+  npm start
+  ```
+  - Create production optimized build
+  ```
+  npm build
+  ```
 
 
