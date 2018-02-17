@@ -4,11 +4,22 @@ import classNames from 'classnames';
 
 class ShelfChanger extends React.Component {
 
-    state = {
-        shelfClassName: classNames({
-            'book-shelf-changer': true,
-        })
+    constructor(props) {
+        super(props);
+
+        let handleHideLoading = (props.handleHideLoading)
+            ? props.handleHideLoading
+            : false;
+
+        this.state = {
+            handleHideLoading: handleHideLoading,
+            shelfClassName: classNames({
+                'book-shelf-changer': true,
+            })
+        }
     }
+
+
 
     moveBook = (book, shelf) => {
         this.setState({
@@ -19,42 +30,60 @@ class ShelfChanger extends React.Component {
             })
         });
 
-        this.props.onBookMove(book, shelf);
+        this.props.onBookMove(book, shelf).then(() => {
+            this.removeLoading();
+        })
     }
 
-    removeLoading(element) {
-        element.setState({
-            shelfClassName: classNames({
-                'book-shelf-changer': true,
-            })
+    removeLoading() {
+        if (this.state.handleHideLoading) {
+            this.setState({
+                shelfClassName: classNames({
+                    'book-shelf-changer': true,
+                })
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            mounted: false
+        });
+    }
+
+    componentDidMount() {
+        this.setState({
+            mounted: true
         });
     }
 
     render() {
-
-        return <div className={this.state.shelfClassName}>
-            <select onMouseEnter={(e) => {
-                e.target.click()
-            }}
-                onMouseLeave={(e) => {
-                    e.target.click()
-                }}
-                value={this.props.shelf} onChange={(event) => {
-                    this.moveBook(this.props.book, event.target.value);
-                }}>
-                <option value="none" disabled>Move to...</option>
-                {
-                    Object.keys(this.props.shelfs).map((shelfID) => {
-                        return <option key={shelfID} value={shelfID}>{this.props.shelfs[shelfID].label}</option>
-                    })
-                }
-                {
-                    this.props.shelf !== 'none' && (
-                        <option value="none">Remove from list</option>
-                    )
-                }
-            </select>
-        </div>
+        return (
+            <div className={this.state.shelfClassName}>
+                <select
+                    onMouseEnter={(e) => {
+                        e.target.click()
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.click()
+                    }}
+                    value={this.props.shelf} onChange={(event) => {
+                        return this.moveBook(this.props.book, event.target.value);
+                    }}>
+                    <option value="none" disabled>Move to...</option>
+                    {
+                        Object.keys(this.props.shelfs).map((shelfID) => {
+                            return <option key={shelfID} value={shelfID}>{this.props.shelfs[shelfID].label}</option>
+                        })
+                    }
+                    {
+                        this.props.shelf !== 'none' && (
+                            <option value="none">Remove from list</option>
+                        )
+                    }
+                </select>
+            </div>
+        )
     }
 
 }

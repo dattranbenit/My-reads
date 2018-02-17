@@ -8,6 +8,15 @@ import BookCover from '../components/BookCover';
 
 class BookShelf extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            handleHideLoading: (props.handleHideLoading)
+                ? props.handleHideLoading
+                : false
+        }
+    }
+
     render() {
 
         let olClasses = classNames({
@@ -20,7 +29,6 @@ class BookShelf extends React.Component {
                 <ol className="books-grid">
                     {
                         this.props.books.map(book => (
-
                             <li key={book.id}>
                                 <div className="book">
                                     <div className="book-top">
@@ -29,10 +37,11 @@ class BookShelf extends React.Component {
                                             shelf={book.shelf}
                                             shelfs={this.props.shelfs}
                                             book={book}
-                                            onBookMove={this.props.onBookMove} />
+                                            onBookMove={this.props.onBookMove}
+                                            handleHideLoading={this.state.handleHideLoading} />
                                     </div>
                                     <div className="book-title">{book.title}</div>
-                                    <div className="book-authors">{Array.isArray(book.authors)?book.authors.join(', '):''}</div>
+                                    <div className="book-authors">{Array.isArray(book.authors) ? book.authors.join(', ') : ''}</div>
                                 </div>
                             </li>
                         ))

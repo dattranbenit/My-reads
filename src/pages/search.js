@@ -6,14 +6,18 @@ import { search } from '../services/BooksApi';
 import { debounce } from 'throttle-debounce';
 
 class Search extends React.Component {
-    state = {
-        query: '',
-        loading: false
-    }
+
 
     constructor(props) {
         super(props);
         this.doSearch = debounce(250, this.doSearch);
+        this.onBookMove = this.onBookMove.bind(this);
+
+        this.state = {
+            query: '',
+            loading: false,
+            books: []
+        }
     }
 
     showLoading() {
@@ -43,10 +47,10 @@ class Search extends React.Component {
                     if (response.error) {
                         throw Error(response.error);
                     }
-                    let books = response;
-                    books.forEach(function (obj) { obj.shelf = "none" })
-                    this.props.onSearchUpdate(this.state.query, books)
+
+                    this.props.onSearchUpdate(this.state.query, response)
                     this.hideLoading()
+
 
                 }).catch((response) => {
                     this.props.onSearchUpdate(this.state.query, [])
@@ -55,14 +59,27 @@ class Search extends React.Component {
         }
     }
 
+    onBookMove(book, targetShelf) {
+        return this.props.onBookMove(book, targetShelf);
+    }
+
     componentDidMount() {
         this.updateSearch(this.state.query);
     }
 
+    componentWillReceiveProps(props) {
+        let newState = {};
 
+        if (props.books) {
+            newState.books = props.books;
+        }
+
+        this.setState(newState);
+    }
 
     render() {
-        let content
+
+        let content;
 
         if (this.state.loading) {
             content = <div className="loading is-visible" />
@@ -74,9 +91,10 @@ class Search extends React.Component {
                 content = <div>Start typing to search for books to add to your list</div>
             } else {
                 content = <BookShelf
-                    books={this.props.books}
+                    books={this.state.books}
                     shelfs={this.props.shelfs}
-                    onBookMove={this.props.onBookMove} />
+                    onBookMove={this.onBookMove}
+                    handleHideLoading={true} />
             }
         }
 

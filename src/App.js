@@ -7,79 +7,102 @@ import List from './pages/list'
 import { getAll, update } from './services/BooksApi'
 
 class BooksApp extends React.Component {
-	state = {
-		shelfs: {
-			currentlyReading: {
-				label: 'Currently Reading'
-			},
-			wantToRead: {
-				label: 'Want to Read'
-			},
-			read: {
-				label: 'Read'
-			}
-		},
-		books: [],
-		search: {
-			query: null,
-			books: [],
-		}
-	}
+    state = {
+        shelfs: {
+            currentlyReading: {
+                label: 'Currently Reading'
+            },
+            wantToRead: {
+                label: 'Want to Read'
+            },
+            read: {
+                label: 'Read'
+            }
+        },
+        books: [],
+        search: {
+            query: null,
+            books: [],
+        },
+        bookShelfAssoc: {}
+    }
 
-	refreshBookList = () => {
-		this.setState({
-			books: []
-		})
+    refreshBookList = () => {
+        this.setState({
+            books: []
+        })
 
-		getAll()
-			.then((data) => {
-				this.setState({
-					books: data
-				})
-			})
-	}
+        getAll()
+            .then((data) => {
+                this.setState({
+                    books: data
+                })
+                this.updateBookShelfAssoc(data);
+            });
+    }
 
-	onBookMove = (book, targetShelf) => {
+    updateBookShelfAssoc(books) {
+        let bookShelfAssoc = {};
+        books.forEach((book) => {
+            bookShelfAssoc[book.id] = book.shelf
+        });
 
-		update(book, targetShelf)
-			.then(() => this.refreshBookList())
+        this.setState({ bookShelfAssoc });
 
-	}
+        this.onSearchUpdate(
+            this.state.search.query,
+            this.state.search.books
+        );
+    }
 
-	onSearchUpdate = (query, books) => {
-		let state = this.state;
+    onBookMove = (book, targetShelf) => {
 
-		state.search = {
-			query: query,
-			books: books
-		}
+        return update(book, targetShelf)
+            .then(() => this.refreshBookList())
 
-		this.setState(state);
+    }
 
-	}
+    onSearchUpdate = (query, books) => {
 
-	componentDidMount() {
-		this.refreshBookList()
-	}
+        books.forEach((book) => {
+            book.shelf = (this.state.bookShelfAssoc[book.id])
+                ? this.state.bookShelfAssoc[book.id]
+                : 'none';
+        })
+
+        let state = this.state;
+
+        state.search = {
+            query: query,
+            books: books
+        }
+
+        this.setState(state);
+
+    }
+
+    componentDidMount() {
+        this.refreshBookList()
+    }
 
 
-	render() {
-		return (<div className="app">
-			<Route exact path="/search" render={() => (
-				<Search
-					shelfs={this.state.shelfs}
-					books={this.state.search.books}
-					onBookMove={this.onBookMove}
-					onSearchUpdate={this.onSearchUpdate} />
-			)} />
-			<Route exact path="/" render={() => (
-				<List
-					shelfs={this.state.shelfs}
-					books={this.state.books}
-					onBookMove={this.onBookMove} />
-			)} />
-		</div>)
-	}
+    render() {
+        return (<div className="app">
+            <Route exact path="/search" render={() => (
+                <Search
+                    shelfs={this.state.shelfs}
+                    books={this.state.search.books}
+                    onBookMove={this.onBookMove}
+                    onSearchUpdate={this.onSearchUpdate} />
+            )} />
+            <Route exact path="/" render={() => (
+                <List
+                    shelfs={this.state.shelfs}
+                    books={this.state.books}
+                    onBookMove={this.onBookMove} />
+            )} />
+        </div>)
+    }
 }
 
 export default BooksApp
