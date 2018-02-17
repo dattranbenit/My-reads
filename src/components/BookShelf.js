@@ -64,7 +64,7 @@ BookShelf.propTypes = {
     shelfs: PropTypes.object.isRequired,
     books: PropTypes.array.isRequired,
     onBookMove: PropTypes.func.isRequired,
-    requestComplete: PropTypes.bool.isRequired
+    requestComplete: PropTypes.bool
 };
 
 export default BookShelf
