@@ -25,11 +25,12 @@ class List extends React.Component {
                                             {this.props.shelfs[shelfID].label}
                                         </h2>
 
-                                        <Loading isVisible={this.props.books.length <= 0} />
+                                        <Loading isVisible={!this.props.myRequestComplete} />
                                         <BookShelf
                                             books={this.props.books.filter(book => book.shelf === shelfID)}
                                             shelfs={this.props.shelfs}
-                                            onBookMove={this.props.onBookMove} />
+                                            onBookMove={this.props.onBookMove}
+                                            requestComplete={this.props.myRequestComplete} />
                                     </div>
                                 ))
                             }
@@ -49,6 +50,7 @@ class List extends React.Component {
 
 List.propTypes = {
     shelfs: PropTypes.object.isRequired,
+    myRequestComplete: PropTypes.bool.isRequired,
     books: PropTypes.array.isRequired,
     onBookMove: PropTypes.func.isRequired
 };

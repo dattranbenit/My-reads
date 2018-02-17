@@ -24,18 +24,21 @@ class BooksApp extends React.Component {
             query: null,
             books: [],
         },
-        bookShelfAssoc: {}
+        bookShelfAssoc: {},
+        myRequestComplete: false
     }
 
     refreshBookList = () => {
         this.setState({
+            myRequestComplete: false,
             books: []
         })
 
         getAll()
             .then((data) => {
                 this.setState({
-                    books: data
+                    books: data,
+                    myRequestComplete: true
                 })
                 this.updateBookShelfAssoc(data);
             });
@@ -97,6 +100,7 @@ class BooksApp extends React.Component {
             )} />
             <Route exact path="/" render={() => (
                 <List
+                    myRequestComplete={this.state.myRequestComplete}
                     shelfs={this.state.shelfs}
                     books={this.state.books}
                     onBookMove={this.onBookMove} />
