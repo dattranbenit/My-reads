@@ -25,5 +25,9 @@ Main features:
   ```
   npm build
   ```
+  - Run the tests 
+  ```
+  npm test
+  ```
 
 
