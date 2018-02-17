@@ -1,9 +1,10 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import './App.css'
 import Search from './pages/search'
 import List from './pages/list'
+import NotFoundPage from './pages/notFound'
 import { getAll, update } from './services/BooksApi'
 
 class BooksApp extends React.Component {
@@ -91,20 +92,23 @@ class BooksApp extends React.Component {
 
     render() {
         return (<div className="app">
-            <Route exact path="/search" render={() => (
-                <Search
-                    shelfs={this.state.shelfs}
-                    books={this.state.search.books}
-                    onBookMove={this.onBookMove}
-                    onSearchUpdate={this.onSearchUpdate} />
-            )} />
-            <Route exact path="/" render={() => (
-                <List
-                    myRequestComplete={this.state.myRequestComplete}
-                    shelfs={this.state.shelfs}
-                    books={this.state.books}
-                    onBookMove={this.onBookMove} />
-            )} />
+            <Switch>
+                <Route exact path="/search" render={() => (
+                    <Search
+                        shelfs={this.state.shelfs}
+                        books={this.state.search.books}
+                        onBookMove={this.onBookMove}
+                        onSearchUpdate={this.onSearchUpdate} />
+                )} />
+                <Route exact path="/" render={() => (
+                    <List
+                        myRequestComplete={this.state.myRequestComplete}
+                        shelfs={this.state.shelfs}
+                        books={this.state.books}
+                        onBookMove={this.onBookMove} />
+                )} />
+                <Route component={NotFoundPage} />
+            </Switch>
         </div>)
     }
 }

@@ -50,7 +50,7 @@ class List extends React.Component {
 
 List.propTypes = {
     shelfs: PropTypes.object.isRequired,
-    myRequestComplete: PropTypes.bool.isRequired,
+    myRequestComplete: PropTypes.bool,
     books: PropTypes.array.isRequired,
     onBookMove: PropTypes.func.isRequired
 };
